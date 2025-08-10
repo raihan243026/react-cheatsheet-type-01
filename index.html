@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ইন্টারেক্টিভ রিয়্যাক্ট চিট শীট</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Serene Blue & Warm Neutrals -->
+    <!-- Application Structure Plan: A side-navigation based SPA. The left sidebar lists all React concepts from the report. Clicking a concept loads its description and a fully interactive demo in the main content area. This non-linear, task-oriented structure is superior to the original linear document for a cheat sheet, as it allows users to instantly access specific information and learn by doing, rather than just reading. This design choice directly enhances usability and knowledge retention. -->
+    <!-- Visualization & Content Choices: Each concept from the report is transformed from static text into an interactive module. Props: Live text input updates a component. useState: Buttons manipulate a visible counter. Events: A button triggers a custom message box (avoiding alerts). Style: Toggles dynamically apply CSS classes and inline styles. useEffect: The counter demo is reused to show the document title updating as a side effect. All interactions are built with vanilla JavaScript, HTML, and Tailwind CSS, directly demonstrating the concept in a hands-on manner. NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .nav-link.active {
+            background-color: #3b82f6;
+            color: white;
+            font-weight: 600;
+        }
+        .code-block {
+            background-color: #1f2937;
+            color: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        .demo-box {
+            border: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-top: 1.5rem;
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-64 bg-white shadow-lg">
+            <div class="p-6">
+                <h2 class="text-2xl font-bold text-blue-600">রিয়্যাক্ট চিট শীট</h2>
+                <p class="text-sm text-gray-500 mt-1">ইন্টারেক্টিভ গাইড</p>
+            </div>
+            <nav id="sidebar-nav" class="flex flex-row md:flex-col p-2 md:p-4">
+                <button class="nav-link w-full text-left p-3 my-1 rounded-lg transition-colors duration-200 hover:bg-blue-100 active" data-target="props">১. প্রপস (Props)</button>
+                <button class="nav-link w-full text-left p-3 my-1 rounded-lg transition-colors duration-200 hover:bg-blue-100" data-target="state">২. স্টেট ও useState</button>
+                <button class="nav-link w-full text-left p-3 my-1 rounded-lg transition-colors duration-200 hover:bg-blue-100" data-target="events">৩. ইভেন্ট হ্যান্ডলার</button>
+                <button class="nav-link w-full text-left p-3 my-1 rounded-lg transition-colors duration-200 hover:bg-blue-100" data-target="style">৪. ক্লাসনেম ও স্টাইল</button>
+                <button class="nav-link w-full text-left p-3 my-1 rounded-lg transition-colors duration-200 hover:bg-blue-100" data-target="effect">৫. useEffect হুক</button>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 md:p-10">
+            <!-- Section 1: Props -->
+            <section id="props" class="content-section active">
+                <h1 class="text-4xl font-bold mb-4">প্রপস (Props)</h1>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    প্রপস (Props) হল একটি কম্পোনেন্ট থেকে অন্য কম্পোনেন্টে ডেটা পাস করার একটি উপায়। এটি কম্পোনেন্টকে ডাইনামিক এবং পুনরায় ব্যবহারযোগ্য (reusable) করে তোলে। প্রপস <strong>Read-only</strong> হয়, অর্থাৎ একবার পাঠানো হলে এটি চাইল্ড কম্পোনেন্টে পরিবর্তন করা যায় না।
+                </p>
+                <div class="demo-box">
+                    <h3 class="text-xl font-semibold mb-4">ইন্টারেক্টিভ ডেমো</h3>
+                    <input type="text" id="props-input" class="border p-2 rounded w-full mb-4" value="পৃথিবী" placeholder="এখানে একটি নাম লিখুন">
+                    <div id="props-output" class="text-2xl font-bold p-4 bg-white rounded-lg border">হ্যালো, পৃথিবী!</div>
+                </div>
+                <div class="mt-6">
+                    <h3 class="text-xl font-semibold mb-2">উদাহরণ কোড</h3>
+                    <pre class="code-block"><code>const Greeting = (props) => {
+  return &lt;h1&gt;হ্যালো, {props.name}!&lt;/h1&gt;;
+};
+
+const App = () => {
+  return &lt;Greeting name="পৃথিবী" /&gt;;
+};</code></pre>
+                </div>
+            </section>
+
+            <!-- Section 2: State & useState -->
+            <section id="state" class="content-section">
+                <h1 class="text-4xl font-bold mb-4">স্টেট (State) এবং <code>useState</code> হুক</h1>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    স্টেট (State) হল কম্পোনেন্টের নিজস্ব ডেটা যা সময়ের সাথে পরিবর্তন হতে পারে। যখন স্টেটের পরিবর্তন হয়, রিয়্যাক্ট কম্পোনেন্টটিকে পুনরায় রেন্ডার (re-render) করে। <code>useState</code> হুক ব্যবহার করে আমরা ফাংশনাল কম্পোনেন্টে স্টেট ব্যবহার করতে পারি। এটি একটি অ্যারে রিটার্ন করে যেখানে প্রথম এলিমেন্টটি বর্তমান স্টেট এবং দ্বিতীয়টি একটি ফাংশন যা স্টেট আপডেট করতে ব্যবহৃত হয়।
+                </p>
+                <div class="demo-box">
+                    <h3 class="text-xl font-semibold mb-4">ইন্টারেক্টিভ ডেমো</h3>
+                    <p class="text-2xl font-bold mb-4 text-center">গণনা: <span id="counter-output" class="text-purple-600">0</span></p>
+                    <div class="flex justify-center gap-4">
+                        <button id="increment-btn" class="bg-green-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-600 transition-all">বৃদ্ধি করুন</button>
+                        <button id="decrement-btn" class="bg-red-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-600 transition-all">হ্রাস করুন</button>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <h3 class="text-xl font-semibold mb-2">উদাহরণ কোড</h3>
+                    <pre class="code-block"><code>import React, { useState } from 'react';
+
+const Counter = () => {
+  const [count, setCount] = useState(0);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;গণনা: {count}&lt;/p&gt;
+      &lt;button onClick={() => setCount(count + 1)}&gt;বৃদ্ধি করুন&lt;/button&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+                </div>
+            </section>
+
+            <!-- Section 3: Event Handlers -->
+            <section id="events" class="content-section">
+                <h1 class="text-4xl font-bold mb-4">ইভেন্ট হ্যান্ডলার (Event Handlers)</h1>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    রিয়্যাক্টে, আপনি HTML উপাদানের উপর বিভিন্ন ইভেন্ট (যেমন: ক্লিক, পরিবর্তন) হ্যান্ডেল করতে পারেন। <code>onClick</code>, <code>onChange</code>, <code>onSubmit</code> ইত্যাদি ইভেন্ট হ্যান্ডলার হিসেবে ব্যবহৃত হয়।
+                </p>
+                <div class="demo-box">
+                    <h3 class="text-xl font-semibold mb-4">ইন্টারেক্টিভ ডেমো</h3>
+                    <button id="event-btn" class="bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-600 transition-all">এখানে ক্লিক করুন</button>
+                    <div id="event-output" class="mt-4 p-4 rounded-lg bg-blue-100 text-blue-800 font-medium" style="display: none;"></div>
+                </div>
+                <div class="mt-6">
+                    <h3 class="text-xl font-semibold mb-2">উদাহরণ কোড</h3>
+                    <pre class="code-block"><code>const ButtonClick = () => {
+  const handleClick = () => {
+    alert("বাটনে ক্লিক করা হয়েছে!");
+  };
+
+  return (
+    &lt;button onClick={handleClick}&gt;
+      ক্লিক করুন
+    &lt;/button&gt;
+  );
+};</code></pre>
+                </div>
+            </section>
+
+            <!-- Section 4: className & style -->
+            <section id="style" class="content-section">
+                <h1 class="text-4xl font-bold mb-4">ক্লাসনেম (className) এবং স্টাইল (style)</h1>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    <strong><code>className</code>:</strong> এটি CSS ক্লাস যোগ করার জন্য ব্যবহৃত হয়। এটি HTML-এর <code>class</code> অ্যাট্রিবিউটের মতোই কাজ করে, তবে JSX-এ <code>className</code> লিখতে হয়।
+                    <br><br>
+                    <strong><code>style</code>:</strong> এটি ইনলাইন CSS যোগ করার জন্য ব্যবহৃত হয়। এটি একটি জাভাস্ক্রিপ্ট অবজেক্ট গ্রহণ করে, যেখানে CSS প্রপার্টিগুলি ক্যামেলকেস (camelCase) ফরম্যাটে লেখা হয়।
+                </p>
+                <div class="demo-box">
+                    <h3 class="text-xl font-semibold mb-4">ইন্টারেক্টিভ ডেমো</h3>
+                    <div id="style-output" class="p-6 rounded-lg text-center text-xl transition-all duration-300 bg-white border">এটি একটি নমুনা টেক্সট</div>
+                    <div class="flex justify-center gap-4 mt-4">
+                        <button id="toggle-class-btn" class="bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-600">বোল্ড ক্লাস যোগ/বাদ দিন</button>
+                        <button id="toggle-style-btn" class="bg-teal-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-600">রঙ পরিবর্তন করুন</button>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <h3 class="text-xl font-semibold mb-2">উদাহরণ কোড</h3>
+                    <pre class="code-block"><code>const StyledText = () => {
+  const myStyle = {
+    color: "blue",
+    fontSize: "24px"
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;h1 className="heading"&gt;এটি ক্লাসনেম দিয়ে স্টাইল করা হয়েছে।&lt;/h1&gt;
+      &lt;p style={myStyle}&gt;এটি স্টাইল অবজেক্ট দিয়ে স্টাইল করা হয়েছে।&lt;/p&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+                </div>
+            </section>
+
+            <!-- Section 5: useEffect -->
+            <section id="effect" class="content-section">
+                <h1 class="text-4xl font-bold mb-4"><code>useEffect</code> হুক</h1>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    <code>useEffect</code> হুক আপনাকে ফাংশনাল কম্পোনেন্টে সাইড ইফেক্ট (side effects) চালানোর সুবিধা দেয়। ডেটা ফেচিং, ম্যানুয়ালি DOM মডিফাই করা, বা টাইমারে কাজ করার জন্য এটি ব্যবহৃত হয়। এটি কম্পোনেন্ট রেন্ডার হওয়ার পর বা নির্দিষ্ট স্টেটের পরিবর্তন হলে কল হয়।
+                </p>
+                <div class="demo-box">
+                    <h3 class="text-xl font-semibold mb-4">ইন্টারেক্টিভ ডেমো</h3>
+                    <p class="text-center text-lg mb-2">নিচের বাটনে ক্লিক করুন এবং ব্রাউজারের ট্যাব টাইটেল লক্ষ্য করুন।</p>
+                    <p class="text-2xl font-bold mb-4 text-center">গণনা: <span id="effect-counter-output" class="text-purple-600">0</span></p>
+                    <div class="flex justify-center">
+                        <button id="effect-increment-btn" class="bg-green-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-600 transition-all">গণনা বৃদ্ধি করুন</button>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <h3 class="text-xl font-semibold mb-2">উদাহরণ কোড</h3>
+                    <pre class="code-block"><code>import React, { useState, useEffect } from 'react';
+
+const TitleChanger = () => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    document.title = `আপনি ${count} বার ক্লিক করেছেন`;
+  }, [count]); // ডিপেন্ডেন্সি অ্যারে
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;গণনা: {count}&lt;/p&gt;
+      &lt;button onClick={() => setCount(count + 1)}&gt;ক্লিক করুন&lt;/button&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            // Navigation handler
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    const targetId = link.getAttribute('data-target');
+                    
+                    navLinks.forEach(nav => nav.classList.remove('active'));
+                    link.classList.add('active');
+
+                    contentSections.forEach(section => {
+                        if (section.id === targetId) {
+                            section.classList.add('active');
+                        } else {
+                            section.classList.remove('active');
+                        }
+                    });
+                });
+            });
+
+            // --- Interactive Demos Logic ---
+
+            // 1. Props Demo
+            const propsInput = document.getElementById('props-input');
+            const propsOutput = document.getElementById('props-output');
+            propsInput.addEventListener('input', (e) => {
+                const name = e.target.value || 'কিছু';
+                propsOutput.textContent = `হ্যালো, ${name}!`;
+            });
+
+            // 2. State Demo
+            let counter = 0;
+            const counterOutput = document.getElementById('counter-output');
+            document.getElementById('increment-btn').addEventListener('click', () => {
+                counter++;
+                counterOutput.textContent = counter;
+            });
+            document.getElementById('decrement-btn').addEventListener('click', () => {
+                counter--;
+                counterOutput.textContent = counter;
+            });
+
+            // 3. Event Handler Demo
+            const eventBtn = document.getElementById('event-btn');
+            const eventOutput = document.getElementById('event-output');
+            eventBtn.addEventListener('click', () => {
+                eventOutput.textContent = 'বাটনে ক্লিক করা হয়েছে! এটি একটি onClick ইভেন্টের ফলাফল।';
+                eventOutput.style.display = 'block';
+                setTimeout(() => {
+                    eventOutput.style.display = 'none';
+                }, 3000);
+            });
+
+            // 4. Style & className Demo
+            const styleOutput = document.getElementById('style-output');
+            document.getElementById('toggle-class-btn').addEventListener('click', () => {
+                styleOutput.classList.toggle('font-bold');
+            });
+
+            let isColored = false;
+            document.getElementById('toggle-style-btn').addEventListener('click', () => {
+                if (isColored) {
+                    styleOutput.style.color = '#1f2937';
+                    styleOutput.style.backgroundColor = '#ffffff';
+                } else {
+                    styleOutput.style.color = '#ffffff';
+                    styleOutput.style.backgroundColor = '#1d4ed8';
+                }
+                isColored = !isColored;
+            });
+            
+            // 5. useEffect Demo
+            let effectCounter = 0;
+            const effectCounterOutput = document.getElementById('effect-counter-output');
+            document.getElementById('effect-increment-btn').addEventListener('click', () => {
+                effectCounter++;
+                effectCounterOutput.textContent = effectCounter;
+                // Simulating useEffect
+                document.title = `গণনা: ${effectCounter}`;
+            });
+        });
+    </script>
+</body>
+</html>
